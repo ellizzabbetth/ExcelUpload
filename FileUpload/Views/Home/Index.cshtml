@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <form asp-controller="Home" asp-action="UploadSmallFile" enctype="multipart/form-data" id="BlobUploadForm" method="post" class="form-label-left" role="form">
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="input-group">
+                        <label class="input-group-btn">
+                            <span class="btn btn-primary">
+                                Browse… <input type="file" style="display: none;" name="file" id="FileInput">
+                            </span>
+                        </label>
+                        <input type="text" class="form-control" readonly="" id="BrowseInput">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <button type="submit" value="Upload Small File" class="btn btn-default" id="UploadSmallFile">Upload Small Excel File</button>
+                    </div>
+                </div>        
+            </div>
+        </form>
+    </div>
+    <div class="alert alert-info fade">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        Select a small Excel file.
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/vendor/bootstrap-waitingfor/bootstrap-waitingfor.js"></script>
+    <script src="~/vendor/azure-storage/azure-storage.blob.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('form').submit(function () {
+                if (!$("form input[type=file]").val()) {                  
+                    $(".alert").removeClass("in").show();
+                    $(".alert").delay(2000).addClass("in").fadeOut(2000);                 
+                    return false;
+                }
+            });
+        });
+        $(document).on('change', ':file', function () {
+            var input = $(this)
+            var label = $('#BrowseInput').val(input.val().replace(/\\/g, '/').replace(/.*\//, ''));
+        });
+    </script> 
+}
